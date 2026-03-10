@@ -8,7 +8,7 @@ int main() {
   while (!WindowShouldClose()) {
     BeginDrawing();
     ClearBackground(RAYWHITE);
-    DrawText("It works!", 20, 20, 20, BLACK);
+    DrawText("CockRoach", 20, 20, 20, BLACK);
     EndDrawing();
   }
   CloseWindow();

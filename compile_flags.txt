@@ -1,0 +1,8 @@
+-isystem
+C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.29.30133/include
+-isystem
+C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/ucrt
+-isystem
+C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/shared
+-isystem
+C:/Program Files (x86)/Windows Kits/10/Include/10.0.26100.0/um
