@@ -83,8 +83,8 @@ int main(void)
         else if (IsKeyDown(KEY_H)) angle = (360 + angle - 1)%360;
 
         // Select current animation
-        if (IsKeyPressed(KEY_T)) animIndex = (animIndex + 1)%animsCount;
-        else if (IsKeyPressed(KEY_G)) animIndex = (animIndex + animsCount - 1)%animsCount;
+        // if (IsKeyPressed(KEY_T)) animIndex = (animIndex + 1)%animsCount;
+        // else if (IsKeyPressed(KEY_G)) animIndex = (animIndex + animsCount - 1)%animsCount;
 
         // Update model animation
         // ModelAnimation anim = modelAnimations[animIndex];
@@ -100,18 +100,20 @@ int main(void)
 
             BeginMode3D(camera);
                 // Draw character
-                Quaternion characterRotate = QuaternionFromAxisAngle((Vector3){ 0.0f, 1.0f, 0.0f }, angle*DEG2RAD);
-                characterModel.transform = MatrixMultiply(QuaternionToMatrix(characterRotate), MatrixTranslate(position.x, position.y, position.z));
+                // Quaternion characterRotate = QuaternionFromAxisAngle((Vector3){ 0.0f, 1.0f, 0.0f }, angle*DEG2RAD);
+                // characterModel.transform = MatrixMultiply(QuaternionToMatrix(characterRotate), MatrixTranslate(position.x, position.y, position.z));
+
+                DrawModel(model, (Vector3){0.0f, 0.0f, 0.0f}, 1.0f, WHITE);
                 // UpdateModelAnimation(characterModel, anim, (float)animCurrentFrame);
-                DrawMesh(characterModel.meshes[0], characterModel.materials[1], characterModel.transform);
+                // DrawMesh(characterModel.meshes[0], characterModel.materials[1], characterModel.transform);
 
 
                 DrawGrid(10, 1.0f);
             EndMode3D();
 
-            DrawText("Use the T/G to switch animation", 10, 10, 20, GRAY);
+            // DrawText("Use the T/G to switch animation", 10, 10, 20, GRAY);
             DrawText("Use the F/H to rotate character left/right", 10, 35, 20, GRAY);
-            DrawText("Use the 1,2,3 to toggle shown of hat, sword and shield", 10, 60, 20, GRAY);
+            // DrawText("Use the 1,2,3 to toggle shown of hat, sword and shield", 10, 60, 20, GRAY);
 
         EndDrawing();
         //----------------------------------------------------------------------------------
