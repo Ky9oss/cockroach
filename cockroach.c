@@ -88,7 +88,7 @@ int main(void)
 
         // Update model animation
         ModelAnimation anim = modelAnimations[animIndex];
-        animCurrentFrame = (animCurrentFrame + 1)%anim.keyframeCount;
+        animCurrentFrame = (animCurrentFrame + 1)%anim.frameCount;
         UpdateModelAnimation(characterModel, anim, (float)animCurrentFrame);
         //----------------------------------------------------------------------------------
 
