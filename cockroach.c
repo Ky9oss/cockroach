@@ -100,10 +100,9 @@ int main(void)
 
             BeginMode3D(camera);
                 // Draw character
-                // Quaternion characterRotate = QuaternionFromAxisAngle((Vector3){ 0.0f, 1.0f, 0.0f }, angle*DEG2RAD);
-                // characterModel.transform = MatrixMultiply(QuaternionToMatrix(characterRotate), MatrixTranslate(position.x, position.y, position.z));
+                Quaternion characterRotate = QuaternionFromAxisAngle((Vector3){ 0.0f, 1.0f, 0.0f }, angle*DEG2RAD);
+                characterModel.transform = MatrixMultiply(QuaternionToMatrix(characterRotate), MatrixTranslate(position.x, position.y, position.z));
 
-                DrawModel(characterModel, (Vector3){0.0f, 0.0f, 0.0f}, 1.0f);
                 // UpdateModelAnimation(characterModel, anim, (float)animCurrentFrame);
                 // DrawMesh(characterModel.meshes[0], characterModel.materials[1], characterModel.transform);
 
