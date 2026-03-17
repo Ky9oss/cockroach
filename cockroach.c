@@ -36,7 +36,7 @@ int main(void)
     int animsCount = 0;
     unsigned int animIndex = 0;
     unsigned int animCurrentFrame = 0;
-    // ModelAnimation *modelAnimations = LoadModelAnimations("resources/models/gltf/greenman.glb", &animsCount);
+    ModelAnimation *modelAnimations = LoadModelAnimations("resources/models/cockroach.glb", &animsCount);
 
     // Indices of bones for sockets
     // int boneSocketIndex[BONE_SOCKETS] = { -1, -1, -1 };
@@ -87,9 +87,9 @@ int main(void)
         // else if (IsKeyPressed(KEY_G)) animIndex = (animIndex + animsCount - 1)%animsCount;
 
         // Update model animation
-        // ModelAnimation anim = modelAnimations[animIndex];
-        // animCurrentFrame = (animCurrentFrame + 1)%anim.keyframeCount;
-        // UpdateModelAnimation(characterModel, anim, (float)animCurrentFrame);
+        ModelAnimation anim = modelAnimations[animIndex];
+        animCurrentFrame = (animCurrentFrame + 1)%anim.keyframeCount;
+        UpdateModelAnimation(characterModel, anim, (float)animCurrentFrame);
         //----------------------------------------------------------------------------------
 
         // Draw
@@ -104,7 +104,7 @@ int main(void)
                 // characterModel.transform = MatrixMultiply(QuaternionToMatrix(characterRotate), MatrixTranslate(position.x, position.y, position.z));
 
                 DrawModel(characterModel, (Vector3){0.0f, 0.0f, 0.0f}, 2.0f, WHITE);
-                // UpdateModelAnimation(characterModel, anim, (float)animCurrentFrame);
+                UpdateModelAnimation(characterModel, anim, (float)animCurrentFrame);
                 // DrawMesh(characterModel.meshes[0], characterModel.materials[1], characterModel.transform);
 
 
