@@ -18,7 +18,7 @@ int main(void)
     const int screenWidth = 800;
     const int screenHeight = 450;
 
-    InitWindow(screenWidth, screenHeight, "raylib [models] example - bone socket");
+    InitWindow(screenWidth, screenHeight, "cockroach");
 
     // Define the camera to look into our 3d world
     Camera camera = { 0 };
@@ -103,7 +103,7 @@ int main(void)
                 // Quaternion characterRotate = QuaternionFromAxisAngle((Vector3){ 0.0f, 1.0f, 0.0f }, angle*DEG2RAD);
                 // characterModel.transform = MatrixMultiply(QuaternionToMatrix(characterRotate), MatrixTranslate(position.x, position.y, position.z));
 
-                DrawModel(characterModel, (Vector3){0.0f, 0.0f, 0.0f}, 1.0f, RED);
+                DrawModel(characterModel, (Vector3){0.0f, 0.0f, 0.0f}, 1.0f, WHITE);
                 // UpdateModelAnimation(characterModel, anim, (float)animCurrentFrame);
                 // DrawMesh(characterModel.meshes[0], characterModel.materials[1], characterModel.transform);
 
