@@ -39,29 +39,29 @@ int main(void)
     // ModelAnimation *modelAnimations = LoadModelAnimations("resources/models/gltf/greenman.glb", &animsCount);
 
     // Indices of bones for sockets
-    int boneSocketIndex[BONE_SOCKETS] = { -1, -1, -1 };
+    // int boneSocketIndex[BONE_SOCKETS] = { -1, -1, -1 };
 
     // Search bones for sockets
-    for (int i = 0; i < characterModel.skeleton.boneCount; i++)
-    {
-        if (TextIsEqual(characterModel.skeleton.bones[i].name, "socket_hat"))
-        {
-            boneSocketIndex[BONE_SOCKET_HAT] = i;
-            continue;
-        }
-
-        if (TextIsEqual(characterModel.skeleton.bones[i].name, "socket_hand_R"))
-        {
-            boneSocketIndex[BONE_SOCKET_HAND_R] = i;
-            continue;
-        }
-
-        if (TextIsEqual(characterModel.skeleton.bones[i].name, "socket_hand_L"))
-        {
-            boneSocketIndex[BONE_SOCKET_HAND_L] = i;
-            continue;
-        }
-    }
+    // for (int i = 0; i < characterModel.skeleton.boneCount; i++)
+    // {
+    //     if (TextIsEqual(characterModel.skeleton.bones[i].name, "socket_hat"))
+    //     {
+    //         boneSocketIndex[BONE_SOCKET_HAT] = i;
+    //         continue;
+    //     }
+    //
+    //     if (TextIsEqual(characterModel.skeleton.bones[i].name, "socket_hand_R"))
+    //     {
+    //         boneSocketIndex[BONE_SOCKET_HAND_R] = i;
+    //         continue;
+    //     }
+    //
+    //     if (TextIsEqual(characterModel.skeleton.bones[i].name, "socket_hand_L"))
+    //     {
+    //         boneSocketIndex[BONE_SOCKET_HAND_L] = i;
+    //         continue;
+    //     }
+    // }
 
     Vector3 position = { 0.0f, 0.0f, 0.0f }; // Set model position
     unsigned short angle = 0;           // Set angle for rotate character
