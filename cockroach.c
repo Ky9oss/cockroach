@@ -1,133 +1,108 @@
 #include "raylib.h"
 
-#include "raymath.h"
-
-#define BONE_SOCKETS        3
-#define BONE_SOCKET_HAT     0
-#define BONE_SOCKET_HAND_R  1
-#define BONE_SOCKET_HAND_L  2
-
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
-int main(void)
+int main(void) {
 
-{
-    // Initialization
-    //--------------------------------------------------------------------------------------
-    const int screenWidth = 800;
-    const int screenHeight = 450;
+  // Initialization
+  //--------------------------------------------------------------------------------------
+  const int winWidth = 450;
+  const int winHeight = 450;
 
-    InitWindow(screenWidth, screenHeight, "cockroach");
+  SetConfigFlags(FLAG_WINDOW_UNDECORATED);       // 去掉标题栏、边框
+  SetConfigFlags(FLAG_WINDOW_TOPMOST);           // 窗口永远置顶
+  SetConfigFlags(FLAG_WINDOW_TRANSPARENT);       // 窗口背景透明
+  SetConfigFlags(FLAG_WINDOW_MOUSE_PASSTHROUGH); // 鼠标点击穿透
 
-    // Define the camera to look into our 3d world
-    Camera camera = { 0 };
-    camera.position = (Vector3){ 5.0f, 5.0f, 5.0f }; // Camera position
-    camera.target = (Vector3){ 0.0f, 2.0f, 0.0f };  // Camera looking at point
-    camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };      // Camera up vector (rotation towards target)
-    camera.fovy = 45.0f;                            // Camera field-of-view Y
-    camera.projection = CAMERA_PERSPECTIVE;         // Camera projection type
+  InitWindow(winWidth, winHeight, "robot");
+
+  int margin = 20;
 
 
-    // Load gltf model
-    Model characterModel = LoadModel("resources/models/cockroach.glb"); // Load character model
+  int currentMonitor = GetCurrentMonitor(); 
 
-    // Load gltf model animations
-    int animsCount = 0;
-    unsigned int animIndex = 0;
-    unsigned int animCurrentFrame = 0;
-    ModelAnimation *modelAnimations = LoadModelAnimations("resources/models/cockroach.glb", &animsCount);
+  Vector2 monitorPos = GetMonitorPosition(currentMonitor); // position of the top left corner
+  int monitorW = GetMonitorWidth(currentMonitor);
+  int monitorH = GetMonitorHeight(currentMonitor);
 
-    // Indices of bones for sockets
-    // int boneSocketIndex[BONE_SOCKETS] = { -1, -1, -1 };
+  SetWindowPosition((int)monitorPos.x + monitorW - winWidth - margin,
+                    (int)monitorPos.y + monitorH - winHeight - margin);
 
-    // Search bones for sockets
-    // for (int i = 0; i < characterModel.skeleton.boneCount; i++)
-    // {
-    //     if (TextIsEqual(characterModel.skeleton.bones[i].name, "socket_hat"))
-    //     {
-    //         boneSocketIndex[BONE_SOCKET_HAT] = i;
-    //         continue;
-    //     }
-    //
-    //     if (TextIsEqual(characterModel.skeleton.bones[i].name, "socket_hand_R"))
-    //     {
-    //         boneSocketIndex[BONE_SOCKET_HAND_R] = i;
-    //         continue;
-    //     }
-    //
-    //     if (TextIsEqual(characterModel.skeleton.bones[i].name, "socket_hand_L"))
-    //     {
-    //         boneSocketIndex[BONE_SOCKET_HAND_L] = i;
-    //         continue;
-    //     }
-    // }
+  // Define the camera to look into our 3d world
+  Camera camera = {0};
+  camera.position = (Vector3){6.0f, 6.0f, 6.0f}; // Camera position
+  camera.target = (Vector3){0.0f, 2.0f, 0.0f};   // Camera looking at point
+  camera.up =
+      (Vector3){0.0f, 1.0f, 0.0f}; // Camera up vector (rotation towards target)
+  camera.fovy = 45.0f;             // Camera field-of-view Y
+  camera.projection = CAMERA_PERSPECTIVE; // Camera projection type
 
-    Vector3 position = { 0.0f, 0.0f, 0.0f }; // Set model position
-    unsigned short angle = 0;           // Set angle for rotate character
+  // Load model
+  Model model = LoadModel("resources/models/robot.glb");
+  Vector3 position = {0.0f, 0.0f, 0.0f}; // Set model world position
 
-    DisableCursor();                    // Limit cursor to relative movement inside the window
+  // Load model animations
+  int animCount = 0;
+  ModelAnimation *anims =
+      LoadModelAnimations("resources/models/robot.glb", &animCount);
 
-    SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
-    //--------------------------------------------------------------------------------------
+  // Animation playing variables
+  unsigned int animIndex = 0;        // Current animation playing
+  unsigned int animCurrentFrame = 0; // Current animation frame
 
-    // Main game loop
-    while (!WindowShouldClose())        // Detect window close button or ESC key
-    {
-        // Update
-        //----------------------------------------------------------------------------------
-        UpdateCamera(&camera, CAMERA_THIRD_PERSON);
+  SetTargetFPS(60); // Set our game to run at 60 frames-per-second
+  //--------------------------------------------------------------------------------------
 
-        // Rotate character
-        if (IsKeyDown(KEY_F)) angle = (angle + 1)%360;
-        else if (IsKeyDown(KEY_H)) angle = (360 + angle - 1)%360;
+  // Main game loop
+  while (!WindowShouldClose()) // Detect window close button or ESC key
+  {
+    // Update
+    //----------------------------------------------------------------------------------
+    UpdateCamera(&camera, CAMERA_ORBITAL);
 
-        // Select current animation
-        // if (IsKeyPressed(KEY_T)) animIndex = (animIndex + 1)%animsCount;
-        // else if (IsKeyPressed(KEY_G)) animIndex = (animIndex + animsCount - 1)%animsCount;
+    // Select current animation
+    if (IsKeyPressed(KEY_RIGHT))
+      animIndex = (animIndex + 1) % animCount;
+    else if (IsKeyPressed(KEY_LEFT))
+      animIndex = (animIndex + animCount - 1) % animCount;
 
-        // Update model animation
-        ModelAnimation anim = modelAnimations[animIndex];
-        animCurrentFrame = (animCurrentFrame + 1)%anim.frameCount;
-        UpdateModelAnimation(characterModel, anim, (float)animCurrentFrame);
-        //----------------------------------------------------------------------------------
+    // Update model animation
+    animCurrentFrame = (animCurrentFrame + 1) % anims[animIndex].frameCount;
+    UpdateModelAnimation(model, anims[animIndex], (float)animCurrentFrame);
+    //----------------------------------------------------------------------------------
 
-        // Draw
-        //----------------------------------------------------------------------------------
-        BeginDrawing();
+    // Draw
+    //----------------------------------------------------------------------------------
+    BeginDrawing();
 
-            ClearBackground(RAYWHITE);
+    ClearBackground(BLANK);
 
-            BeginMode3D(camera);
-                // Draw character
-                // Quaternion characterRotate = QuaternionFromAxisAngle((Vector3){ 0.0f, 1.0f, 0.0f }, angle*DEG2RAD);
-                // characterModel.transform = MatrixMultiply(QuaternionToMatrix(characterRotate), MatrixTranslate(position.x, position.y, position.z));
+    BeginMode3D(camera);
 
-                DrawModel(characterModel, (Vector3){0.0f, 0.0f, 0.0f}, 1.0f, WHITE);
-                // UpdateModelAnimation(characterModel, anim, (float)animCurrentFrame);
-                // DrawMesh(characterModel.meshes[0], characterModel.materials[1], characterModel.transform);
+    DrawModel(model, position, 1.0f, WHITE);
 
+    // DrawGrid(10, 1.0f);
 
-                DrawGrid(10, 1.0f);
-            EndMode3D();
+    EndMode3D();
 
-            // DrawText("Use the T/G to switch animation", 10, 10, 20, GRAY);
-            DrawText("Use the F/H to rotate character left/right", 10, 35, 20, GRAY);
-            // DrawText("Use the 1,2,3 to toggle shown of hat, sword and shield", 10, 60, 20, GRAY);
+    // DrawText(TextFormat("Current animation: %s", anims[animIndex].name), 10,
+    // 40,
+    //          20, MAROON);
+    // DrawText("Use the LEFT/RIGHT keys to switch animation", 10, 10, 20,
+    // GRAY);
 
-        EndDrawing();
-        //----------------------------------------------------------------------------------
-    }
+    EndDrawing();
+    //----------------------------------------------------------------------------------
+  }
 
-    // De-Initialization
-    //--------------------------------------------------------------------------------------
-    // UnloadModelAnimations(modelAnimations, animsCount);
-    UnloadModel(characterModel);         // Unload character model and meshes/material
+  // De-Initialization
+  //--------------------------------------------------------------------------------------
+  UnloadModelAnimations(anims, animCount); // Unload model animations data
+  UnloadModel(model);                      // Unload model
 
-    CloseWindow();              // Close window and OpenGL context
-    //--------------------------------------------------------------------------------------
+  CloseWindow(); // Close window and OpenGL context
+  //--------------------------------------------------------------------------------------
 
-    return 0;
+  return 0;
 }
-
-
