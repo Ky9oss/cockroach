@@ -30,7 +30,7 @@ int main(void)
 
 
     // Load gltf model
-    Model characterModel = LoadModel("resources/models/cockroack.glb"); // Load character model
+    Model characterModel = LoadModel("resources/models/cockroach.glb"); // Load character model
 
     // Load gltf model animations
     int animsCount = 0;
